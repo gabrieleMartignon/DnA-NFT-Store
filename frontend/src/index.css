@@ -1,0 +1,26 @@
+@import "tailwindcss";
+@plugin "tailwind-scrollbar";
+@plugin "tailwind-scrollbar-hide";
+
+* {
+  font-family: 'Inter', roboto;
+}
+
+
+@theme {
+  --color-primary: #1e40af; /* blu profondo */
+  --color-accent:  #06b6d4;  /* ciano */ 
+  --color-bg:  #f8fafc;  /* grigio chiaro */ 
+  --color-text: #0f172a;  /* blu navy */ 
+}
+
+
+body {
+  overflow-x: hidden;
+}
+
+.numero-input::-webkit-outer-spin-button,
+.numero-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
