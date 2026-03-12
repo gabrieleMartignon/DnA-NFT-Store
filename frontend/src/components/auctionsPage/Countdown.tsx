@@ -16,7 +16,7 @@ export default function Countdown() {
 
       const endTime: number = Number(auction[3]) * 1000;
       let msRemaining: number = endTime - Date.now();
-      const interval = setInterval(() => {
+      setInterval(() => {
         if (msRemaining > 0) {
           msRemaining -= 1000;
           const seconds = Math.floor((msRemaining / 1000) % 60);

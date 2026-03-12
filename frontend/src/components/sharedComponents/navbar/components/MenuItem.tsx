@@ -50,7 +50,7 @@ export default function MenuItem({
             return (
               <div>
                 <a
-                  key={i}
+                  key={title}
                   className="flex items-center px-4 py-2 text-gray-800 gap-3 sm:gap-5 hover:bg-accent/15 rounded-lg "
                   onClick={() => {
                     (navigate(onNavigate[i]), setCurrentPage(pageName));
