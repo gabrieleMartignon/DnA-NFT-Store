@@ -1,24 +1,12 @@
-import { ethers } from "ethers";
+import { ethers, type BigNumberish } from "ethers";
 import { useActiveAccount } from "thirdweb/react";
-import { prepareTransaction, sendTransaction } from "thirdweb";
-import { sepolia } from "thirdweb/chains";
-import { client } from "../../scripts/thirdWebClient";
-import { encodeFunctionData } from "viem";
+import { sendTransaction, prepareContractCall } from "thirdweb";
 import { useEffect, useState } from "react";
-import { auctionContractRead } from "../../utils/config";
-import Alert from "./alert";
-import RarityBadge from "./rarityBadge";
-
-type PropsTypes = {
-  auction: {
-    id: bigint;
-    rarity: string;
-    highestBid: number;
-    imgSrc: string;
-    minBid: bigint;
-    startingPrice: number;
-  };
-};
+import { auctionContract, auctionContractRead } from "../../utils/config";
+import Alert from "../sharedComponents/alert";
+import RarityBadge from "../sharedComponents/rarityBadge";
+import type { auctionType } from "../directPurchasePage/directPurchasePage";
+import type { alertMessage } from "../sharedComponents/alert";
 
 export function getRarityBadge(rarity: string) {
   switch (rarity.toLowerCase()) {
@@ -35,22 +23,26 @@ export function getRarityBadge(rarity: string) {
   }
 }
 
-export default function AuctionBox({ auction }: PropsTypes) {
+type propsType = {
+  auction: auctionType;
+};
+
+export default function AuctionBox({ auction }: propsType) {
   const account = useActiveAccount();
-  const [currentBestBid, setCurrentBestBid] = useState<any>();
-  const [minBid, setMinBid] = useState<any>();
+  const [currentBestBid, setCurrentBestBid] = useState<number | bigint>(0);
+  const [minBid, setMinBid] = useState<BigNumberish>();
   const [isTransactionLoading, setIsTransactionLoading] = useState<boolean>(false);
-  const [alertData, setAlertData] = useState<{ errorString?: string; messageString: any; isActive: boolean | undefined } | null>(null);
+  const [alertData, setAlertData] = useState<alertMessage | null>(null);
 
   useEffect(() => {
     setCurrentBestBid(auction.highestBid);
     setMinBid(auction.minBid);
   }, [auction]);
 
-  function showAlert(error: string, message: string | unknown) {
-    setAlertData({ errorString: error, messageString: message, isActive: true });
+  function showAlert(_error: string, _message: string) {
+    setAlertData({ error: _error, message: _message, isActive: true });
     setTimeout(() => {
-      setAlertData({ errorString: error, messageString: message, isActive: false });
+      setAlertData({ error: _error, message: _message, isActive: false });
     }, 3500);
   }
 
@@ -58,78 +50,45 @@ export default function AuctionBox({ auction }: PropsTypes) {
     if (!account) {
       showAlert("No wallet connected", "Connect a wallet before placing a bid");
     } else {
-      const data = encodeFunctionData({
-        abi: [
-          {
-            name: "placeBid",
-            outputs: [],
-            stateMutability: "payable",
-            type: "function",
-            inputs: [
-              {
-                internalType: "uint256",
-                name: "tokenId",
-                type: "uint256",
-              },
-            ],
-          },
-        ],
-        functionName: "placeBid",
-        args: [tokenId],
-      });
-
-      const transaction = prepareTransaction({
-        to: import.meta.env.VITE_AUCTIONS_CONTRACT_ADDRESS,
-        chain: sepolia,
-        client,
-        value: bidValue,
-        data: data,
-      });
-
-      let result;
-
       try {
         setIsTransactionLoading(true);
-        result = await sendTransaction({
-          transaction,
-          account,
+        const tx = prepareContractCall({
+          contract: auctionContract,
+          method: "function placeBid(uint256 tokenId)",
+          params: [tokenId],
+          value: bidValue,
         });
-
-        if (result != undefined) {
-          try {
-            await new Promise((resolve) => setTimeout(resolve, 13000));
-            const updatedAuction = await auctionContractRead.tokenAuction(tokenId);
-            setMinBid(updatedAuction[6]);
-            setCurrentBestBid(bidValue);
-            console.log(result.transactionHash);
-            showAlert("Bid registered", `${result.transactionHash}`);
-          } catch (error) {}
-        }
+        const result = await sendTransaction({
+          transaction: tx,
+          account: account,
+        });
+        showAlert("Bid registered", `${result.transactionHash}`);
       } catch (error) {
         console.log(error);
-        console.log(tokenId);
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        showAlert("Transaction Status", errorMessage);
+        return showAlert("Error", (error as Error).message);
+      } finally {
+        setIsTransactionLoading(false);
+        const updatedAuction = await auctionContractRead.tokenAuction(tokenId);
+        setMinBid(updatedAuction[6]);
+        setCurrentBestBid(bidValue);
       }
-      setIsTransactionLoading(false);
-      return result;
     }
   };
 
   return (
     <>
       {alertData?.isActive == false ? (
-        <Alert error={alertData?.errorString} message={alertData?.messageString} isActive={false} />
+        <Alert error={alertData?.error} message={alertData?.message} isActive={false} />
       ) : (
-        <Alert error={alertData?.errorString} message={alertData?.messageString} isActive={alertData?.isActive ?? false} />
+        <Alert error={alertData?.error} message={String(alertData?.message)} isActive={alertData?.isActive ?? false} />
       )}
-      <div className="rounded-lg shadow-xl flex justify-around h-auto gap-7  xl:w-[33%] w-auto items-center drop-shadow-lg drop-white p-1  border-2  border-accent bg-accent/10 scale-80 xl:scale-100">
+
+      <div className="rounded-lg shadow-xl flex justify-around h-auto gap-7  xl:w-[33%] w-auto items-center drop-shadow-lg drop-white p-1  border-2  border-accent bg-accent/10 scale-80 xl:scale-100 ">
         <div className=" flex w-[40%]  h-full m-2 ">
           <img src={auction.imgSrc} alt="NFT image" className=" mx-auto my-auto w-40 h-43 rounded-2xl border drop-shadow-2xl border-transparent " />
         </div>
-
-        <div className="flex flex-col gap-2 h-full w-[60%] justify-center mr-4">
-          <p className="text-text font-extrabold text-xl">DnA NFT #{auction.id}</p>
+        <div className="flex flex-col gap-2 h-full w-[60%] justify-center mr-4 ">
+          <p className="text-text font-extrabold text-xl">DnA NFT #{auction.tokenId}</p>
           {getRarityBadge(auction.rarity)}
 
           {currentBestBid >= auction.startingPrice ? (
@@ -147,7 +106,7 @@ export default function AuctionBox({ auction }: PropsTypes) {
           <button
             className="relative h-auto flex items-center w-auto justify-center py-1 overflow-hidden rounded-md bg-primary/80 px-2 text-neutral-50 transition hover:bg-primary cursor-pointer font-bold"
             onClick={async () => {
-              let bid: any = auction.highestBid > 0 ? auction.minBid : auction.startingPrice;
+              const bid: bigint = BigInt(auction.highestBid > 0 ? auction.minBid : auction.startingPrice);
               await onClickPlaceBid(auction.id, bid);
             }}
           >
@@ -155,7 +114,7 @@ export default function AuctionBox({ auction }: PropsTypes) {
               {isTransactionLoading
                 ? "Loading transaction....."
                 : currentBestBid > 0
-                  ? `Bid ${parseFloat(ethers.formatEther(minBid)).toFixed(6)}`
+                  ? `Bid ${parseFloat(ethers.formatEther(minBid as BigNumberish)).toFixed(6)}`
                   : `Bid ${parseFloat(ethers.formatEther(auction.startingPrice)).toFixed(4)} `}
               <img
                 className="scale-75"
@@ -182,8 +141,7 @@ export default function AuctionBox({ auction }: PropsTypes) {
                 type="button"
                 onClick={async () => {
                   const inputElement = document.querySelector(`input[input-id="${auction.id}"]`) as HTMLInputElement;
-                  console.log(inputElement);
-                  let inputValue = inputElement?.value || "0";
+                  const inputValue = inputElement?.value || "0";
                   await onClickPlaceBid(auction.id, ethers.parseEther(inputValue));
                 }}
               >

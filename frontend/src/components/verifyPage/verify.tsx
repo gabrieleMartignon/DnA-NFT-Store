@@ -115,12 +115,12 @@ export default function () {
             isVerifyOpen ? "bg-accent/20" : "bg-transparent"
           }`}
           min={1}
-          max={1196}
+          max={248}
           value={inputValue}
           onChange={(e) => {
             let value = e.target.value;
-            if (parseInt(value) > 1196 || parseInt(value) < 1) {
-              value = "1196";
+            if (parseInt(value) > 248 || parseInt(value) < 1) {
+              value = "248";
             }
             setInputValue(value);
           }}

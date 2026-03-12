@@ -15,9 +15,8 @@ export default function Countdown() {
       const auction = await auctionContractRead.tokenAuction(tokenId);
 
       const endTime: number = Number(auction[3]) * 1000;
-      const now: number = Date.now();
-      let msRemaining: number = endTime - now;
-      setInterval(() => {
+      let msRemaining: number = endTime - Date.now();
+      const interval = setInterval(() => {
         if (msRemaining > 0) {
           msRemaining -= 1000;
           const seconds = Math.floor((msRemaining / 1000) % 60);
@@ -28,6 +27,7 @@ export default function Countdown() {
           setTimeLeft({ days, hours, minutes, seconds });
         }
       }, 1000);
+      
     } catch (error) {
       console.error("Errore:", error);
     }

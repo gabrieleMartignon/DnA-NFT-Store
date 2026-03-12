@@ -32,18 +32,18 @@ contract NFT is ERC721, Ownable {
     ) ERC721("DnA NFTs Collection", "DnA") Ownable(msg.sender) {
         require(basePrice > 0, "Invalid price");
 
-        supplyStats.total = 1196;
-
-        supplyStats.Common = rarityStats(598, 598, basePrice);
-        supplyStats.Uncommon = rarityStats(300, 300, basePrice * 2);
-        supplyStats.Rare = rarityStats(175, 175, basePrice * 4);
-        supplyStats.Epic = rarityStats(75, 75, basePrice * 8);
-        supplyStats.Legendary = rarityStats(48, 48, basePrice * 16);
+        supplyStats.total = 248;
+        supplyStats.auctionedSupply = 0;
+        supplyStats.Common = rarityStats(124, 124, basePrice);
+        supplyStats.Uncommon = rarityStats(62, 62, basePrice * 2);
+        supplyStats.Rare = rarityStats(34, 34, basePrice * 4);
+        supplyStats.Epic = rarityStats(18, 18, basePrice * 8);
+        supplyStats.Legendary = rarityStats(10, 10, basePrice * 16);
     }
 
     function _baseURI() internal pure override returns (string memory) {
         return
-            "https://bafybeias6q3afmfifj4cbxbamvhil2aczjb2mdqrs25ht2xtcrhmjcd22e.ipfs.w3s.link/";
+            "https://secret-violet-wren.myfilebase.com/ipfs/Qmf5p36JfDKj1ThqABjP3eWSqNM7KBBAzDnBhouU1EBTGc/";
     }
 
     function externalBaseURI() external pure returns (string memory) {
@@ -73,7 +73,9 @@ contract NFT is ERC721, Ownable {
         auctionContract = newAuctionAddress;
     }
 
-    function getStartingPrice(uint256 tokenId) external view returns (uint256) {
+    function getStartingPrice(
+        uint256 tokenId
+    ) external view returns (uint256 price) {
         rarityStats memory stats = _getRarityStats(tokenId);
         return stats.startingPrice;
     }
@@ -88,17 +90,17 @@ contract NFT is ERC721, Ownable {
     function _getRarityStats(
         uint256 tokenId
     ) internal view returns (rarityStats storage stats) {
-        require(tokenId > 0 && tokenId <= 1196, "Invalid TokenId");
+        require(tokenId > 0 && tokenId <= 248, "Invalid TokenId");
 
-        if (tokenId > 598) return supplyStats.Common;
-        if (tokenId > 298) return supplyStats.Uncommon;
-        if (tokenId > 123) return supplyStats.Rare;
-        if (tokenId > 48) return supplyStats.Epic;
+        if (tokenId > 124) return supplyStats.Common;
+        if (tokenId > 62) return supplyStats.Uncommon;
+        if (tokenId > 28) return supplyStats.Rare;
+        if (tokenId > 10) return supplyStats.Epic;
         return supplyStats.Legendary;
     }
 
-    function decreaseAuctionedSupply() external {
-    require(msg.sender == auctionContract, "Not authorized");
-    supplyStats.auctionedSupply--;
-}
+    function increaseAuctionedSupply() external {
+        require(msg.sender == auctionContract, "Not authorized");
+        supplyStats.auctionedSupply++;
+    }
 }

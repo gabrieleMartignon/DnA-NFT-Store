@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className=" mt-6 flex items-center justify-center px-4">
       <div className="w-full h-auto py-2 flex justify-around">
         <div className="lg:gap-4 flex items-center justify-center ">
-          <img src={GMLogo} alt="Personal Logo" width={140}  />
+          <img src={GMLogo} alt="Personal Logo" width={140} />
         </div>
         <div className="gap-4 flex items-center justify-center ">
           <p className="text-center text-base md:text-lg   text-muted max-w-3xl leading-relaxed  text-text/70 tracking-wide text-balance mr-5">

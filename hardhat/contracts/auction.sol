@@ -28,7 +28,7 @@ interface INFT {
 
     function supplyStats() external pure returns (supply memory stats);
 
-    function decreaseAuctionedSupply() external;
+    function increaseAuctionedSupply() external;
 }
 
 contract Auction is ReentrancyGuard, Ownable, AutomationCompatibleInterface {
@@ -104,7 +104,7 @@ contract Auction is ReentrancyGuard, Ownable, AutomationCompatibleInterface {
         uint8 count = 0;
         uint256 seed = 0;
         require(
-            nftContract.supplyStats().auctionedSupply >= 4,
+            nftContract.supplyStats().auctionedSupply <= 244,
             "All auctions completed"
         );
         while (count < 4) {
@@ -112,7 +112,15 @@ contract Auction is ReentrancyGuard, Ownable, AutomationCompatibleInterface {
                 keccak256(abi.encodePacked(block.timestamp, seed))
             ) % nftContract.supplyStats().total) + 1;
 
-            if (tokenAuction[randomTokenId].state == auctionState.NotStarted) {
+            bool alreadySelected = false;
+            for (uint8 j = 0; j < count; j++) {
+            if (tokenIds[j] == randomTokenId) {
+                alreadySelected = true;
+                break;
+            }
+        }
+
+            if (alreadySelected == false && tokenAuction[randomTokenId].state == auctionState.NotStarted) {
                 tokenIds[count] = randomTokenId;
                 count++;
             }
@@ -152,7 +160,7 @@ contract Auction is ReentrancyGuard, Ownable, AutomationCompatibleInterface {
                 auctionCounter,
                 tokenIds[i],
                 block.timestamp,
-                block.timestamp + 10 minutes,
+                block.timestamp + 7 days,
                 bid(bidCounter, tokenIds[i], 0, 0, address(0)),
                 auctionState.Running,
                 0,
@@ -242,7 +250,7 @@ contract Auction is ReentrancyGuard, Ownable, AutomationCompatibleInterface {
                 onEndingAuction.state = auctionState.Unsold;
                 unsoldAuctions.push(onEndingAuction);
             }
-            nftContract.decreaseAuctionedSupply();
+            nftContract.increaseAuctionedSupply();
 
             emit AuctionsClosed(
                 onEndingAuction.tokenId,

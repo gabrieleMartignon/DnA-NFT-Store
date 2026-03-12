@@ -1,5 +1,5 @@
 import { ConnectButton } from "thirdweb/react";
-import { client } from "./../../../scripts/thirdWebClient.ts";
+import { client } from "../../../../scripts/thirdWebClient";
 import { sepolia } from "thirdweb/chains";
 
 export default function Modal() {
@@ -27,7 +27,7 @@ export default function Modal() {
           margin: "-25px",
         },
       }}
-      chain = {sepolia}
+      chain={sepolia}
     />
   );
 }

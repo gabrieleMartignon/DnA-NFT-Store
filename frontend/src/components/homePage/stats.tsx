@@ -39,9 +39,9 @@ export default function Stats() {
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-8">
-            {stats.map((stat, index) => (
+            {stats.map((stat) => (
               <div
-                key={index}
+                key={stat.label}
                 className="bg-white rounded-2xl p-5 shadow-lg  transition-all duration-400 transform  flex-1 min-w-55 max-w-60 border-t-primary/90 border-t-8 border-b-primary/90 border-b-8 hover:shadow-primary hover:shadow-2xl hover:scale-105 h-43"
               >
                 <div className="text-3xl font-bold mb-1 text-primary/90">{stat.value}</div>

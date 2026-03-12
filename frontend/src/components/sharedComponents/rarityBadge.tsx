@@ -39,7 +39,7 @@ const colorMap: ColorMap = {
 type Props = {
   size: string;
   rarity: rarities;
-  onSelect?: any;
+  onSelect?: () => void | undefined;
   isSelected?: boolean;
 };
 
@@ -49,9 +49,9 @@ export default function RarityBadge({ size, rarity, onSelect, isSelected }: Prop
 
   return (
     <button
-      className={`flex items-center justify-center relative h-auto overflow-hidden rounded-xl ${colors.bg} px-4 py-1 w-20 ${colors.text} text-xs font-bold  transition-all opacity-100 duration-500 hover:shadow-lg ${colors.shadow} border-none ${size} ${isSelected ? (size = "scale-130 lg:scale-170 outline-1") : ""}`}
+      className={`flex items-center justify-center relative h-auto overflow-hidden rounded-xl ${colors.bg} px-4 py-1 w-20 ${colors.text} text-xs font-bold  transition-all opacity-100 duration-500 hover:shadow-lg ${colors.shadow} border-none ${size} ${isSelected ? "scale-130 lg:scale-170 outline-1" : ""}`}
       onClick={() => {
-        onSelect();
+        onSelect?.();
       }}
     >
       {rarity}
