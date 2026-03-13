@@ -84,7 +84,7 @@ export default function AuctionBox({ auction }: propsType) {
       )}
 
       <div className="rounded-lg shadow-xl flex justify-around h-auto gap-7  xl:w-[33%] w-auto items-center drop-shadow-lg drop-white p-1  border-2  border-accent bg-accent/10 scale-80 xl:scale-100 ">
-        <div className=" flex w-[40%]  h-full m-2 ">
+        <div className=" flex w-[50%] md:w-[40%] h-full m-2 ">
           <img src={auction.imgSrc} alt="NFT image" className=" mx-auto my-auto w-40 h-43 rounded-2xl border drop-shadow-2xl border-transparent " />
         </div>
         <div className="flex flex-col gap-2 h-full w-[60%] justify-center mr-4 ">

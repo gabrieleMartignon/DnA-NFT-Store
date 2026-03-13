@@ -90,7 +90,7 @@ export default function () {
   };
 
   return (
-    <div className={`gap-2 md:gap-6 flex-col absolute top-[12vh] md:top-[15vh] lg:top-[12vh] left-1/2 -translate-x-1/2 flex w-full items-center h-[86%]`}>
+    <div className={`gap-2 md:gap-6 flex-col absolute top-[12vh] md:top-[15vh] lg:top-[12vh] left-1/2 -translate-x-1/2 flex w-full items-center h-[90%] sm:h-[86%]`}>
       <div className="flex-col w-full h-auto flex items-center justify-between gap-1">
         <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold bg-linear-to-b from-primary to-accent bg-clip-text text-transparent tracking-tighter w-auto flex justify-center pr-1 text-center py-1 px-1">
           Verify an NFT

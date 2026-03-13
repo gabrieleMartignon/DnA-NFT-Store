@@ -29,7 +29,7 @@ export default function MenuItem({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <li
-      className="relative py-2 px-3 flex items-center justify-center rounded-lg transition duration-300 cursor-pointer w-[25%]"
+      className="relative py-2 px-2.5 flex items-center justify-center rounded-lg transition duration-300 cursor-pointer w-[25%]"
       onMouseEnter={() => {
         (setIsOpen(true), setHoveredPage(pageName));
       }}
@@ -42,13 +42,13 @@ export default function MenuItem({
 
       {hasDropdown ? (
         <div
-          className={`absolute left-0 w-[30vw] min-w-60 h-auto bg-white rounded-lg shadow-lg z-1 transition-all duration-400 top-full scale-85 ${
+          className={`absolute sm:left-0 w-[30vw] min-w-60 h-auto bg-white rounded-lg shadow-lg z-1 transition-all duration-400 top-full scale-85 ${
             isOpen ? "opacity-100" : "opacity-0 mt-10 invisible"
           }`}
         >
           {titles?.map((title, i) => {
             return (
-              <div>
+              <div className="">
                 <a
                   key={title}
                   className="flex items-center px-4 py-2 text-gray-800 gap-3 sm:gap-5 hover:bg-accent/15 rounded-lg "

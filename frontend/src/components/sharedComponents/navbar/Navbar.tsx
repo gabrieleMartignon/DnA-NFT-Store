@@ -22,8 +22,8 @@ export default function Navbar() {
   return (
     <div className="flex items-center justify-center">
       <nav
-        className={`fixed flex z-2 justify-around items-center py-1 md:py-2 lg:py-1 transition-all ease-in-out duration-1000 transform opacity-100 mx-auto ${
-          isScrolled ? "top-[4vh] w-[90vw] sm:w-[80vw] rounded-lg border-3 border-accent z-1 bg-white " : "w-screen top-0 border-transparent"
+        className={`fixed flex z-2 justify-around items-center  py-1 md:py-2 lg:py-1 transition-all ease-in-out duration-1000 transform opacity-100 mx-auto  ${
+          isScrolled ? "top-[4vh] w-[90vw]  sm:w-[80vw] rounded-lg px-0 border sm:border-3 border-accent z-1 bg-white " : "w-screen top-0 border-transparent px-1"
         }`}
       >
         <Logo />

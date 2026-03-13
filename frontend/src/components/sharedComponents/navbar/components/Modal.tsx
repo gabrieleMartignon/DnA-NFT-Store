@@ -12,7 +12,7 @@ export default function Modal() {
       connectButton={{
         label: "Connect",
         style: {
-          scale: 0.8,
+          scale: 0.85,
           minWidth: "80px",
           background: "#06b6d4",
           color: "#ffffff",
@@ -23,8 +23,8 @@ export default function Modal() {
       }}
       detailsButton={{
         style: {
-          scale: 0.65,
-          margin: "-25px",
+          scale : 0.65,
+          margin: "-28px",
         },
       }}
       chain={sepolia}

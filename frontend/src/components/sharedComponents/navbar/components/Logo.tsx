@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 export default function Logo() {
   const navigate = useNavigate();
   return (
-    <div className="w-20 sm:w-25 lg:w-30 h-full flex items-center cursor-pointer">
+    <div className="w-auto sm:w-25 lg:w-30 h-full flex items-center cursor-pointer">
       <a
         onClick={() => {
           navigate("/Home");
