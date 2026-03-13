@@ -1,6 +1,6 @@
 import type { auctionType } from "./directPurchasePage";
 import RarityBadge from "../sharedComponents/rarityBadge";
-import { prepareContractCall, sendTransaction } from "thirdweb";
+import { prepareContractCall, sendTransaction, waitForReceipt } from "thirdweb";
 import { useState } from "react";
 import { auctionContract } from "../../utils/config";
 import Alert from "../sharedComponents/alert";
@@ -8,15 +8,18 @@ import { type rarities } from "./directPurchasePage";
 import { ethers } from "ethers";
 import type { Account } from "thirdweb/wallets";
 import type { alertMessage } from "../sharedComponents/alert";
+import { client } from "../../scripts/thirdWebClient";
+import { sepolia } from "thirdweb/chains";
 
 type propsType = {
   auction: auctionType;
   account: Account | undefined;
   auctionRarity: string;
   data: { [key: number]: { image: string } };
+  onPurchaseComplete: () => void;
 };
 
-export default function DirectPurchaseBox({ auction, account, auctionRarity, data }: propsType) {
+export default function DirectPurchaseBox({ auction, account, auctionRarity, data, onPurchaseComplete }: propsType) {
   const [isTransactionLoading, setIsTransactionLoading] = useState<boolean>(false);
   const [alertData, setAlertData] = useState<alertMessage | null>(null);
 
@@ -39,11 +42,19 @@ export default function DirectPurchaseBox({ auction, account, auctionRarity, dat
           params: [tokenId],
           value: price,
         });
-
-        await sendTransaction({
+        const result = await sendTransaction({
           transaction: tx,
           account: account,
         });
+        await waitForReceipt({
+          client,
+          chain: sepolia,
+          transactionHash: result.transactionHash,
+        });
+        showAlert("Purchase completed", "Your NFT is availble on your wallet");
+
+        await new Promise((resolve) => setTimeout(resolve, 4000));
+        onPurchaseComplete();
       } catch (error) {
         console.log(error);
         return showAlert("Error", (error as Error).message);

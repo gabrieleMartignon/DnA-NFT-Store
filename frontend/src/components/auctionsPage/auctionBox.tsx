@@ -1,12 +1,14 @@
 import { ethers, type BigNumberish } from "ethers";
 import { useActiveAccount } from "thirdweb/react";
-import { sendTransaction, prepareContractCall } from "thirdweb";
+import { sendTransaction, prepareContractCall, waitForReceipt } from "thirdweb";
 import { useEffect, useState } from "react";
 import { auctionContract, auctionContractRead } from "../../utils/config";
 import Alert from "../sharedComponents/alert";
 import RarityBadge from "../sharedComponents/rarityBadge";
 import type { auctionType } from "../directPurchasePage/directPurchasePage";
 import type { alertMessage } from "../sharedComponents/alert";
+import { client } from "../../scripts/thirdWebClient";
+import { sepolia } from "thirdweb/chains";
 
 export function getRarityBadge(rarity: string) {
   switch (rarity.toLowerCase()) {
@@ -62,15 +64,20 @@ export default function AuctionBox({ auction }: propsType) {
           transaction: tx,
           account: account,
         });
+        await waitForReceipt({
+          client,
+          chain: sepolia,
+          transactionHash: result.transactionHash,
+        });
+        const updatedAuction = await auctionContractRead.tokenAuction(tokenId);
+        setMinBid(updatedAuction[6]);
+        setCurrentBestBid(bidValue);
         showAlert("Bid registered", `${result.transactionHash}`);
       } catch (error) {
         console.log(error);
         return showAlert("Error", (error as Error).message);
       } finally {
         setIsTransactionLoading(false);
-        const updatedAuction = await auctionContractRead.tokenAuction(tokenId);
-        setMinBid(updatedAuction[6]);
-        setCurrentBestBid(bidValue);
       }
     }
   };
@@ -93,7 +100,7 @@ export default function AuctionBox({ auction }: propsType) {
 
           {currentBestBid >= auction.startingPrice ? (
             <p className="text-text/70 text-xs flex items-center">
-              Best Bid : <b className="text-text ml-2 text-2xl">{parseFloat(ethers.formatEther(currentBestBid)).toFixed(5)}</b>
+              Best Bid : <b className="text-text font-extrabold ml-2 text-2xl">{parseFloat(ethers.formatEther(currentBestBid)).toFixed(5)}</b>
               <img
                 className="scale-75"
                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA50lEQVR4nM2VMQrCMBSGPxQXR0EQXVyKPYGDm3fRXY8jOuikeAHtKQSvIYJ1LVUJJBBCbZs2Lf3hhxDyvh9e2jxokFpAIC3WzrUEvtIL1/Ae8NACnkDfZcBOgytvXcGnQJwQ8AFmZeFt4JYAV74DnTIB6xS48qoofAC8cgS8gVGRgFMOuPLRFu4DkUVAJGusNAY2GUHi6zoDE1t4V1t7wMEIiuSe96cmU3NgbwBUkAn25FlRY33JcUoL9BZaX7LQEAiNlvjSestCebZ5P1otT0Xlj10tz3UtA4eqR6aQGPRX4FLV0C+kH3n5iUHEyaU2AAAAAElFTkSuQmCC"
@@ -107,20 +114,31 @@ export default function AuctionBox({ auction }: propsType) {
             className="relative h-auto flex items-center w-auto justify-center py-1 overflow-hidden rounded-md bg-primary/80 px-2 text-neutral-50 transition hover:bg-primary cursor-pointer font-bold"
             onClick={async () => {
               const bid: bigint = BigInt(auction.highestBid > 0 ? auction.minBid : auction.startingPrice);
-              await onClickPlaceBid(auction.id, bid);
+              await onClickPlaceBid(auction.tokenId, bid);
             }}
           >
             <div className="relative flex lg:text-lg text-sm items-center justify-center ">
-              {isTransactionLoading
-                ? "Loading transaction....."
-                : currentBestBid > 0
-                  ? `Bid ${parseFloat(ethers.formatEther(minBid as BigNumberish)).toFixed(6)}`
-                  : `Bid ${parseFloat(ethers.formatEther(auction.startingPrice)).toFixed(4)} `}
-              <img
-                className="scale-75"
-                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA50lEQVR4nM2VMQrCMBSGPxQXR0EQXVyKPYGDm3fRXY8jOuikeAHtKQSvIYJ1LVUJJBBCbZs2Lf3hhxDyvh9e2jxokFpAIC3WzrUEvtIL1/Ae8NACnkDfZcBOgytvXcGnQJwQ8AFmZeFt4JYAV74DnTIB6xS48qoofAC8cgS8gVGRgFMOuPLRFu4DkUVAJGusNAY2GUHi6zoDE1t4V1t7wMEIiuSe96cmU3NgbwBUkAn25FlRY33JcUoL9BZaX7LQEAiNlvjSestCebZ5P1otT0Xlj10tz3UtA4eqR6aQGPRX4FLV0C+kH3n5iUHEyaU2AAAAAElFTkSuQmCC"
-                alt="ethereum"
-              ></img>
+              {isTransactionLoading ? (
+                <div id="loader" className="scale-90 "></div>
+              ) : currentBestBid > 0 ? (
+                <>
+                  <h1>Bid {parseFloat(ethers.formatEther(minBid as BigNumberish)).toFixed(6)}</h1>
+                  <img
+                    className="scale-75"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA50lEQVR4nM2VMQrCMBSGPxQXR0EQXVyKPYGDm3fRXY8jOuikeAHtKQSvIYJ1LVUJJBBCbZs2Lf3hhxDyvh9e2jxokFpAIC3WzrUEvtIL1/Ae8NACnkDfZcBOgytvXcGnQJwQ8AFmZeFt4JYAV74DnTIB6xS48qoofAC8cgS8gVGRgFMOuPLRFu4DkUVAJGusNAY2GUHi6zoDE1t4V1t7wMEIiuSe96cmU3NgbwBUkAn25FlRY33JcUoL9BZaX7LQEAiNlvjSestCebZ5P1otT0Xlj10tz3UtA4eqR6aQGPRX4FLV0C+kH3n5iUHEyaU2AAAAAElFTkSuQmCC"
+                    alt="ethereum"
+                  ></img>
+                </>
+              ) : (
+                <>
+                  <h1>Bid {parseFloat(ethers.formatEther(auction.startingPrice)).toFixed(4)} </h1>
+                  <img
+                    className="scale-75"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA50lEQVR4nM2VMQrCMBSGPxQXR0EQXVyKPYGDm3fRXY8jOuikeAHtKQSvIYJ1LVUJJBBCbZs2Lf3hhxDyvh9e2jxokFpAIC3WzrUEvtIL1/Ae8NACnkDfZcBOgytvXcGnQJwQ8AFmZeFt4JYAV74DnTIB6xS48qoofAC8cgS8gVGRgFMOuPLRFu4DkUVAJGusNAY2GUHi6zoDE1t4V1t7wMEIiuSe96cmU3NgbwBUkAn25FlRY33JcUoL9BZaX7LQEAiNlvjSestCebZ5P1otT0Xlj10tz3UtA4eqR6aQGPRX4FLV0C+kH3n5iUHEyaU2AAAAAElFTkSuQmCC"
+                    alt="ethereum"
+                  ></img>
+                </>
+              )}
             </div>
             <div className="animate-shine-infinite absolute inset-0 -top-5 flex h-[calc(100%+40px)] w-full justify-center blur-md">
               <div className="relative h-full w-8 bg-white/30"></div>

@@ -114,13 +114,16 @@ contract Auction is ReentrancyGuard, Ownable, AutomationCompatibleInterface {
 
             bool alreadySelected = false;
             for (uint8 j = 0; j < count; j++) {
-            if (tokenIds[j] == randomTokenId) {
-                alreadySelected = true;
-                break;
+                if (tokenIds[j] == randomTokenId) {
+                    alreadySelected = true;
+                    break;
+                }
             }
-        }
 
-            if (alreadySelected == false && tokenAuction[randomTokenId].state == auctionState.NotStarted) {
+            if (
+                alreadySelected == false &&
+                tokenAuction[randomTokenId].state == auctionState.NotStarted
+            ) {
                 tokenIds[count] = randomTokenId;
                 count++;
             }
@@ -129,6 +132,25 @@ contract Auction is ReentrancyGuard, Ownable, AutomationCompatibleInterface {
         }
 
         return tokenIds;
+    }
+
+    function removeUnsold(
+        auction[] storage unsoldAuctionsArray,
+        uint256 tokenId
+    ) internal {
+        for (uint256 i = 0; i < unsoldAuctionsArray.length; i++) {
+            if (unsoldAuctionsArray[i].tokenId == tokenId) {
+                for (
+                    uint256 a = i;
+                    a < unsoldAuctionsArray.length - 1;
+                    a++
+                ) {
+                    unsoldAuctionsArray[a] = unsoldAuctionsArray[a + 1];
+                }
+                unsoldAuctionsArray.pop();
+                return;
+            }
+        }
     }
 
     function getUserBids(
@@ -174,18 +196,18 @@ contract Auction is ReentrancyGuard, Ownable, AutomationCompatibleInterface {
     }
 
     function placeBid(uint256 tokenId) external payable nonReentrant {
-        auction storage onBiddignAuction = tokenAuction[tokenId];
+        auction storage onBiddingAuction = tokenAuction[tokenId];
         uint256 startingPrice = nftContract.getStartingPrice(tokenId);
 
         require(
-            onBiddignAuction.state == auctionState.Running,
+            onBiddingAuction.state == auctionState.Running,
             "Auction on this token isn't running"
         );
 
-        require(block.timestamp < onBiddignAuction.endTime, "Auction ended");
+        require(block.timestamp < onBiddingAuction.endTime, "Auction ended");
 
         require(
-            msg.sender != onBiddignAuction.highestBid.bidder,
+            msg.sender != onBiddingAuction.highestBid.bidder,
             "You already have the highest bid"
         );
         require(
@@ -193,22 +215,22 @@ contract Auction is ReentrancyGuard, Ownable, AutomationCompatibleInterface {
             "Bid must be equal or superior to starting price"
         );
         require(
-            msg.value >= onBiddignAuction.highestBid.value,
+            msg.value >= onBiddingAuction.highestBid.value,
             "Bid proposed isn't superior to highest bid"
         );
 
-        if (onBiddignAuction.highestBid.value >= 0) {
+        if (onBiddingAuction.highestBid.value >= 0) {
             require(
-                msg.value >= onBiddignAuction.minBid,
+                msg.value >= onBiddingAuction.minBid,
                 "Bid proposed must be above minimal bid"
             );
-            onBiddignAuction.minBid =
+            onBiddingAuction.minBid =
                 msg.value +
                 (msg.value * minBidIncrementalPercentage) /
                 100;
 
-            address oldBidder = onBiddignAuction.highestBid.bidder;
-            uint256 oldBid = onBiddignAuction.highestBid.value;
+            address oldBidder = onBiddingAuction.highestBid.bidder;
+            uint256 oldBid = onBiddingAuction.highestBid.value;
 
             if (oldBid > 0) {
                 (bool success, ) = payable(oldBidder).call{value: oldBid}("");
@@ -218,14 +240,14 @@ contract Auction is ReentrancyGuard, Ownable, AutomationCompatibleInterface {
 
         bidCounter++;
 
-        onBiddignAuction.highestBid = bid(
+        onBiddingAuction.highestBid = bid(
             bidCounter,
             tokenId,
             msg.value,
             block.timestamp,
             msg.sender
         );
-        clientBidList[msg.sender].push(onBiddignAuction.highestBid);
+        clientBidList[msg.sender].push(onBiddingAuction.highestBid);
 
         emit NewBidPlaced(msg.sender, tokenId, msg.value, block.timestamp);
     }
@@ -274,8 +296,11 @@ contract Auction is ReentrancyGuard, Ownable, AutomationCompatibleInterface {
 
         onBuyingUnsold.state = auctionState.Ended;
         onBuyingUnsold.winner = msg.sender;
+        removeUnsold(unsoldAuctions, tokenId);
 
         nftContract.mint(msg.sender, tokenId);
+
+        
 
         uint256 refund = msg.value - price;
         if (refund > 0) {

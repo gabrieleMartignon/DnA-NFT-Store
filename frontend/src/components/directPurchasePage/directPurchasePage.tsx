@@ -72,15 +72,15 @@ export default function DirectPurchase() {
 
   return (
     <>
-      <div className="absolute top-0 md:top-[3vh] -translate-x-1/2 left-1/2 w-[80%] ">
+      <div className="absolute top-[3vh] -translate-x-1/2 left-1/2 w-full sm:w-[80%] overflow-hidden">
         <div className="flex flex-col mt-12 lg:mt-16 items-center justify-center gap-0 lg:gap-4">
-          <h1 className="text-3xl md:text-4xl  lg:text-6xl font-bold bg-linear-to-b from-primary to-accent bg-clip-text text-transparent tracking-tighter text-balance text-center py-2 px-2 ">
+          <h1 className="text-3xl md:text-4xl  lg:text-6xl font-bold bg-linear-to-b from-primary to-accent bg-clip-text text-transparent leading-none tracking-relaxed text-balance text-center py-2 px-2 ">
             Direct Buy
           </h1>
           <p className="text-sm sm:text-base md:text-lg lg:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed font-light tracking-wide text-balance text-center">
             Choose and purchase your DnA NFT at base price.
           </p>
-          <div className="flex flex-wrap justify-evenly items-center w-[90%] h-auto mt-5 gap-2 ">
+          <div className="flex flex-wrap justify-evenly items-center w-[80%] sm:w-[90%] h-auto mt-5 gap-2 ">
             {rarities.map((rarity) => {
               return (
                 <RarityBadge
@@ -88,18 +88,15 @@ export default function DirectPurchase() {
                   size="scale-100 lg:scale-130"
                   rarity={rarity}
                   onSelect={() => {
-                   
-                     
-                  setSelectedRarity(rarity);
+                    setSelectedRarity(rarity);
                   }}
-                    
                   isSelected={selectedRarity == rarity}
                 />
               );
             })}
           </div>
         </div>
-        <div className="w-70 md:w-full h-[65vh] sm:h-[60vh] lg:h-[53vh] mt-7 lg:mt-11 flex flex-row flex-wrap justify-center items-center gap-5 md:gap-10 overflow-y-scroll scrollbar-thumb-accent scrollbar-track-transparent hover:scrollbar-thumb-primary lg:scrollbar-thin mx-auto ">
+        <div className="w-70 md:w-full h-[60vh] lg:h-[53vh] mt-7 lg:mt-11 flex flex-row flex-wrap justify-center items-center gap-5 md:gap-10 overflow-y-scroll scrollbar-thumb-accent scrollbar-track-transparent hover:scrollbar-thumb-primary lg:scrollbar-thin mx-auto ">
           {isLoading ? (
             <div id="loader"></div>
           ) : unsoldNFTsAuctions.length == 0 ? (
@@ -114,7 +111,7 @@ export default function DirectPurchase() {
               .slice(0, 20)
               .map((auction) => {
                 const auctionRarity = getAuctionRarity(auction);
-                return <DirectPurchaseBox auction={auction} account={account} auctionRarity={auctionRarity} data={URIData} />;
+                return <DirectPurchaseBox auction={auction} account={account} auctionRarity={auctionRarity} data={URIData} onPurchaseComplete={loadData}/>;
               })
           )}
         </div>

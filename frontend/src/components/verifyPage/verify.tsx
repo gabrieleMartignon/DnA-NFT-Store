@@ -48,7 +48,7 @@ export default function () {
           <button
             type="button"
             onClick={() => {
-              navigate("/Auction");
+              navigate("/Auctions");
             }}
             className="text-green-500 flex bg-green-500/20 w-auto h-auto justify-between gap-1 px-1 py-0.5 rounded-md items-center border-3 border-green-500 font-bold transition-all duration-400 cursor-pointer hover:border-transparent hover:bg-green-500 hover:text-white hover:shadow-2xl hover:shadow-green-500"
           >
@@ -69,7 +69,7 @@ export default function () {
           <button
             type="button"
             onClick={() => {
-              navigate("/Direct Buy");
+              navigate("/DirectBuy");
             }}
             className="text-green-500 flex bg-green-500/20 w-auto h-auto justify-between gap-1 px-1 py-0.5 rounded-md items-center border-3 border-green-500 font-bold transition-all duration-400 cursor-pointer hover:border-transparent hover:bg-green-500 hover:text-white hover:shadow-2xl hover:shadow-green-500"
           >
@@ -92,7 +92,7 @@ export default function () {
   return (
     <div className={`gap-2 md:gap-6 flex-col absolute top-[12vh] md:top-[15vh] lg:top-[12vh] left-1/2 -translate-x-1/2 flex w-full items-center h-[90%] sm:h-[86%]`}>
       <div className="flex-col w-full h-auto flex items-center justify-between gap-1">
-        <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold bg-linear-to-b from-primary to-accent bg-clip-text text-transparent tracking-tighter w-auto flex justify-center pr-1 text-center py-1 px-1">
+        <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold bg-linear-to-b from-primary to-accent bg-clip-text text-transparent leading-none tracking-relaxed w-auto flex justify-center pr-1 text-center py-1 px-1">
           Verify an NFT
         </h1>
       </div>
@@ -104,7 +104,8 @@ export default function () {
           setIsVerifyOpen(true);
         }}
       >
-        <div className="flex items-center justify-center fill-white cursor-pointer hover:bg-accent/20 rounded-xl p-1.5" onClick={handleSearch}>
+        <div className="flex items-center justify-center fill-white cursor-pointer hover:bg-accent/20 rounded-xl p-1.5" onClick={handleSearch}
+        >
           <svg id="Isolation_Mode" data-name="Isolation Mode" viewBox="0 0 24 24" width="22" height="22">
             <path d="M18.9,16.776A10.539,10.539,0,1,0,16.776,18.9l5.1,5.1L24,21.88ZM10.5,18A7.5,7.5,0,1,1,18,10.5,7.507,7.507,0,0,1,10.5,18Z"></path>
           </svg>

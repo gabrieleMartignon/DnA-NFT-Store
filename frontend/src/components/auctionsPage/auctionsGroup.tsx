@@ -66,7 +66,7 @@ export default function AuctionsGroup() {
   }, []);
 
   return (
-    <div className="flex xl:flex-wrap h-[65vh] max-h-screen w-screen items-center justify-around gap-4 overflow-y-scroll flex-col xl:flex-row xl:overflow-y-hidden ">
+    <div className="flex xl:flex-wrap h-[60vh] sm:h-[65vh] max-h-screen w-screen items-center justify-around  sm:gap-5 overflow-y-scroll flex-col xl:flex-row xl:overflow-y-hidden ">
       {loading ? <div id="loader" className="mb-50"></div> : auctions.map((auction) => <AuctionBox key={auction.tokenId} auction={auction} />)}
     </div>
   );

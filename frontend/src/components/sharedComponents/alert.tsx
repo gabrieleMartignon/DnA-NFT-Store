@@ -9,7 +9,7 @@ export default function Alert(props: alertMessage) {
 
   return (
     <div
-      className={`h-18 w-75 border-2 border-accent bg-white absolute top-[10vh] ${props.isActive ? "left-3/12 md:left-7/12 xl:left-9/12" : "left-14/12 "} flex z-10 p-2 rounded-xl  justify-between items-center text-text/90 transition-all ease-in-out duration-400`}
+      className={`h-18 w-65 sm:h-18 sm:w-75 border-2 border-accent bg-white absolute top-[10vh] ${props.isActive ? "left-[28%] md:left-7/12 xl:left-9/12" : "left-14/12 "} flex z-10 p-2 rounded-xl  justify-between items-center text-text/90 transition-all ease-in-out duration-400`}
     >
       <div className="w-[20%] ">
         {props.error == "Bid registered" ? (

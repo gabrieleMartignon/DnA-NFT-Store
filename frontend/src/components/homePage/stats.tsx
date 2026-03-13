@@ -30,7 +30,7 @@ export default function Stats() {
       <div className="py-20 px-6 w-[80%] rounded-xl">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8">
-            <h2 className="text-5xl lg:text-6xl font-bold bg-linear-to-b from-primary to-accent bg-clip-text text-transparent leading-none tracking-tighter text-balance py-2 px-2 mb-4">
+            <h2 className="text-5xl lg:text-6xl font-bold bg-linear-to-b from-primary to-accent bg-clip-text text-transparent leading-none tracking-relaxed text-balance py-2 px-2 mb-4">
               Our Impact
             </h2>
             <div className="w-24 h-1 mx-auto mb-4 rounded-2xl bg-accent"></div>

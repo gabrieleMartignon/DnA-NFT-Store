@@ -49,7 +49,7 @@ export default function Rarities() {
       onClick={() => setButtonsTransitions(true)}
     >
       <div className="flex flex-col mt-12 lg:mt-16 items-center justify-center gap-4">
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-linear-to-b from-primary to-accent bg-clip-text text-transparent tracking-tighter text-balance text-center py-2 px-2">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-linear-to-b from-primary to-accent bg-clip-text text-transparent leading-none tracking-relaxed text-balance text-center py-2 px-2">
           Rarity benefits
         </h1>
         <div className="w-16 sm:w-20 lg:w-24 h-1 mx-auto bg-accent rounded-full"></div>

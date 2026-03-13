@@ -64,7 +64,7 @@ export default function HistoryPage() {
     <div>
       <div className="absolute top-[17vh] xl:top-[13vh] w-full">
         <div className=" flex-col w-full h-auto  flex items-center justify-between gap-8">
-          <h1 className="text-4xl md:text-6xl font-bold bg-linear-to-b from-primary to-accent bg-clip-text text-transparent tracking-tighter w-auto flex justify-center pr-1 text-center py-1 px-1">
+          <h1 className="text-4xl md:text-6xl font-bold bg-linear-to-b from-primary to-accent bg-clip-text text-transparent leading-none tracking-relaxed w-auto flex justify-center pr-1 text-center py-1 px-1">
             Your bids history
           </h1>
 
