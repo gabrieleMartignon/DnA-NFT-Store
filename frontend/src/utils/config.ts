@@ -6,10 +6,9 @@ import { client } from "../scripts/thirdWebClient";
 import { sepolia } from "thirdweb/chains";
 
 const config = {
-  rpcUrl: import.meta.env.VITE_SEPOLIA_RPC_URL,
-  nftContractAddress: import.meta.env.VITE_NFT_CONTRACT_ADDRESS,
-  auctionsContractAddress: import.meta.env.VITE_AUCTIONS_CONTRACT_ADDRESS,
-  ownerPrivateKey: import.meta.env.VITE_SEPOLIA_PRIVATE_KEY,
+  rpcUrl: "https://0xrpc.io/sep",
+  nftContractAddress: "0x57A4068F040566136817D48F2CA87f6360DF826e",
+  auctionsContractAddress: "0xE92803Fed7a44567fCfC636dBE8681B891298Aa8",
 };
 
 const auctionContractABI = auctionContractJSON.abi 
