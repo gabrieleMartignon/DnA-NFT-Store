@@ -1,7 +1,7 @@
 import { heroImages } from "../../assets/imgs/imagesExports";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import logo from "../../assets/imgs/Logo.png";
+import logo from "../../assets/imgs/DnA_logo.svg";
 import Stats from "./stats";
 import Rarities from "./rarities";
 import Footer from "./footer";
@@ -31,7 +31,7 @@ export default function Hero() {
     <>
       <div className="absolute justify-around flex lg:flex-row flex-col top-[10vh] sm:top-[18vh] lg:top-[23vh] left-0 sm:left-1/11 md:left-1/9 z-1 w-screen sm:w-[80vw] h-auto lg:h-[60vh] sm:scale-85 md:scale-100 scale-100">
         <div className="flex flex-col h-full gap-3 md:gap-5 lg:gap-7 lg:justify-center items-center lg:items-start md:pb-10 text-center lg:text-start">
-          <img src={logo} alt="DnA Logo" className="w-20" />
+          <img src={logo} alt="DnA Logo" className="w-45 rounded-xl" />
           <h1 className="text-5xl sm:text-4xl md:text-6xl font-bold bg-linear-to-b from-primary to-accent bg-clip-text text-transparent leading-none tracking-relaxed text-balance px-2">
             Your Web3 access to Scientific Information
           </h1>

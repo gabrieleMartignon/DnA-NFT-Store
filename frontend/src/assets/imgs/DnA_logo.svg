@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500">
+  <defs>
+    <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0ea5a4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00e5ff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#00e5ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0ea5a4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="strandL" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0ea5a4;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#00e5ff;stop-opacity:0.7" />
+    </linearGradient>
+    <linearGradient id="strandR" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#00e5ff;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#0ea5a4;stop-opacity:0.7" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#0ea5a4" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- === ICON AREA === -->
+  <circle cx="250" cy="250" r="195" fill="none" stroke="url(#tealGrad)" stroke-width="1.5" stroke-opacity="0.3" stroke-dasharray="6 4"/>
+  <circle cx="250" cy="250" r="165" fill="none" stroke="url(#tealGrad)" stroke-width="1" stroke-opacity="0.2"/>
+  <circle cx="250" cy="250" r="150" fill="#0ea5a4" fill-opacity="0.06"/>
+
+  <!-- Strand 1: teal -->
+  <path d="M 160 100 C 175 115, 205 130, 220 145 C 235 160, 235 180, 220 195 C 205 210, 175 225, 160 240 C 145 255, 145 275, 160 290 C 175 305, 205 320, 220 335 C 235 350, 235 370, 220 385 C 205 400, 175 415, 160 430"
+    fill="none" stroke="url(#strandL)" stroke-width="5" stroke-linecap="round" filter="url(#glow)" opacity="0.95"/>
+
+  <!-- Strand 2: cyan -->
+  <path d="M 340 100 C 325 115, 295 130, 280 145 C 265 160, 265 180, 280 195 C 295 210, 325 225, 340 240 C 355 255, 355 275, 340 290 C 325 305, 295 320, 280 335 C 265 350, 265 370, 280 385 C 295 400, 325 415, 340 430"
+    fill="none" stroke="url(#strandR)" stroke-width="5" stroke-linecap="round" filter="url(#glow)" opacity="0.95"/>
+
+  <!-- Bridge 1 -->
+  <line x1="183" y1="128" x2="317" y2="128" stroke="url(#tealGrad)" stroke-width="2.5" stroke-opacity="0.7"/>
+  <circle cx="183" cy="128" r="7" fill="#00e5ff" filter="url(#nodeGlow)" opacity="0.9"/>
+  <circle cx="317" cy="128" r="7" fill="#0ea5a4" filter="url(#nodeGlow)" opacity="0.9"/>
+  <circle cx="250" cy="128" r="4" fill="white" opacity="0.8"/>
+
+  <!-- Bridge 2 -->
+  <line x1="209" y1="168" x2="291" y2="168" stroke="url(#tealGrad)" stroke-width="2" stroke-opacity="0.5"/>
+  <circle cx="209" cy="168" r="5.5" fill="#0ea5a4" filter="url(#nodeGlow)" opacity="0.7"/>
+  <circle cx="291" cy="168" r="5.5" fill="#00e5ff" filter="url(#nodeGlow)" opacity="0.7"/>
+
+  <!-- Bridge 3 -->
+  <line x1="221" y1="210" x2="279" y2="210" stroke="url(#tealGrad)" stroke-width="3" stroke-opacity="0.85"/>
+  <circle cx="221" cy="210" r="8" fill="#00e5ff" filter="url(#nodeGlow)" opacity="1"/>
+  <circle cx="279" cy="210" r="8" fill="#0ea5a4" filter="url(#nodeGlow)" opacity="1"/>
+  <circle cx="250" cy="210" r="4.5" fill="white" opacity="0.9"/>
+
+  <!-- Bridge 4 - center -->
+  <line x1="160" y1="250" x2="340" y2="250" stroke="url(#tealGrad)" stroke-width="3.5" stroke-opacity="0.9"/>
+  <polygon points="160,240 170,240 175,250 170,260 160,260 155,250" fill="url(#tealGrad)" filter="url(#nodeGlow)"/>
+  <polygon points="340,240 350,240 355,250 350,260 340,260 335,250" fill="url(#cyanGrad)" filter="url(#nodeGlow)"/>
+  <circle cx="250" cy="250" r="12" fill="url(#tealGrad)" filter="url(#nodeGlow)"/>
+  <circle cx="250" cy="250" r="5" fill="white"/>
+
+  <!-- Bridge 5 -->
+  <line x1="221" y1="290" x2="279" y2="290" stroke="url(#tealGrad)" stroke-width="3" stroke-opacity="0.85"/>
+  <circle cx="221" cy="290" r="8" fill="#0ea5a4" filter="url(#nodeGlow)" opacity="1"/>
+  <circle cx="279" cy="290" r="8" fill="#00e5ff" filter="url(#nodeGlow)" opacity="1"/>
+  <circle cx="250" cy="290" r="4.5" fill="white" opacity="0.9"/>
+
+  <!-- Bridge 6 -->
+  <line x1="209" y1="332" x2="291" y2="332" stroke="url(#tealGrad)" stroke-width="2" stroke-opacity="0.5"/>
+  <circle cx="209" cy="332" r="5.5" fill="#00e5ff" filter="url(#nodeGlow)" opacity="0.7"/>
+  <circle cx="291" cy="332" r="5.5" fill="#0ea5a4" filter="url(#nodeGlow)" opacity="0.7"/>
+
+  <!-- Bridge 7 -->
+  <line x1="183" y1="372" x2="317" y2="372" stroke="url(#tealGrad)" stroke-width="2.5" stroke-opacity="0.7"/>
+  <circle cx="183" cy="372" r="7" fill="#0ea5a4" filter="url(#nodeGlow)" opacity="0.9"/>
+  <circle cx="317" cy="372" r="7" fill="#00e5ff" filter="url(#nodeGlow)" opacity="0.9"/>
+  <circle cx="250" cy="372" r="4" fill="white" opacity="0.8"/>
+
+  <!-- Vertical divider -->
+  <line x1="480" y1="80" x2="480" y2="430" stroke="url(#tealGrad)" stroke-width="1.5" stroke-opacity="0.25"/>
+
+  <!-- === WORDMARK: DnA === -->
+  <text x="520" y="310"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="220" font-weight="700"
+    fill="url(#tealGrad)" filter="url(#softShadow)">D</text>
+
+  <text x="670" y="310"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="160" font-weight="400"
+    fill="#0ea5a4" opacity="0.75">n</text>
+
+  <text x="780" y="310"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="220" font-weight="700"
+    fill="url(#cyanGrad)" filter="url(#softShadow)">A</text>
+</svg>

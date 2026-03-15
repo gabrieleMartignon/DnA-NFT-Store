@@ -1,10 +1,10 @@
-import logo from "../../../../assets/imgs/Logo.png";
+import logo from "../../../../assets/imgs/DnA_logo.svg"
 import { useNavigate } from "react-router";
 
 export default function Logo() {
   const navigate = useNavigate();
   return (
-    <div className="w-auto sm:w-25 lg:w-30 h-full flex items-center cursor-pointer">
+    <div className="w-auto sm:w-25 lg:w-40 h-full flex items-center cursor-pointer -mr-2">
       <a
         onClick={() => {
           navigate("/Home");
