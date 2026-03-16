@@ -52,7 +52,6 @@ export default function Hero() {
 
         <div className="w-full relative mt-16 sm:mt-10md:mt-20 lg:mt-0 flex justify-center gap-1 sm:gap-2 flex-wrap sm:flex-nowrap ">
           {imgsPosition.map((imageData: string, i: number) => {
-            console.log(imageData)
             return (
               <img
                 key={i}

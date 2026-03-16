@@ -78,7 +78,7 @@ export default function HistoryPage() {
             Connect a wallet to see your bids
           </p>
         ) : userBids && userBids.length > 0 ? (
-          <div className="w-[90%] md:w-[85%] xl:w-[70%] mx-auto mt-15 h-[50vh]  overflow-y-auto">
+          <div className="w-[90%] md:w-[85%] xl:w-[70%] mx-auto mt-15 h-[50vh] flex flex-col-reverse items-center justify-end overflow-y-auto">
             {userBids.slice(0, 20).map((bid) => (
               <div
                 key={bid.id}

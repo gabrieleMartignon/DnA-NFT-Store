@@ -74,7 +74,7 @@ export default function AuctionBox({ auction }: propsType) {
         setCurrentBestBid(bidValue);
         showAlert("Bid registered", `${result.transactionHash}`);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         return showAlert("Error", (error as Error).message);
       } finally {
         setIsTransactionLoading(false);
@@ -113,7 +113,7 @@ export default function AuctionBox({ auction }: propsType) {
           <button
             className="relative h-auto flex items-center w-auto justify-center py-1 overflow-hidden rounded-md bg-primary/80 px-2 text-neutral-50 transition hover:bg-primary cursor-pointer font-bold"
             onClick={async () => {
-              const bid: bigint = BigInt(auction.highestBid > 0 ? auction.minBid : auction.startingPrice);
+              const bid: bigint = BigInt(currentBestBid > 0 ? (minBid as BigNumberish) : auction.startingPrice);
               await onClickPlaceBid(auction.tokenId, bid);
             }}
           >
@@ -122,7 +122,7 @@ export default function AuctionBox({ auction }: propsType) {
                 <div id="loader" className="scale-90 "></div>
               ) : currentBestBid > 0 ? (
                 <>
-                  <h1>Bid {parseFloat(ethers.formatEther(minBid as BigNumberish)).toFixed(6)}</h1>
+                  <h1>Bid {parseFloat(ethers.formatEther(minBid as BigNumberish)).toFixed(6)} </h1>
                   <img
                     className="scale-75"
                     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA50lEQVR4nM2VMQrCMBSGPxQXR0EQXVyKPYGDm3fRXY8jOuikeAHtKQSvIYJ1LVUJJBBCbZs2Lf3hhxDyvh9e2jxokFpAIC3WzrUEvtIL1/Ae8NACnkDfZcBOgytvXcGnQJwQ8AFmZeFt4JYAV74DnTIB6xS48qoofAC8cgS8gVGRgFMOuPLRFu4DkUVAJGusNAY2GUHi6zoDE1t4V1t7wMEIiuSe96cmU3NgbwBUkAn25FlRY33JcUoL9BZaX7LQEAiNlvjSestCebZ5P1otT0Xlj10tz3UtA4eqR6aQGPRX4FLV0C+kH3n5iUHEyaU2AAAAAElFTkSuQmCC"
@@ -160,7 +160,7 @@ export default function AuctionBox({ auction }: propsType) {
                 onClick={async () => {
                   const inputElement = document.querySelector(`input[input-id="${auction.id}"]`) as HTMLInputElement;
                   const inputValue = inputElement?.value || "0";
-                  await onClickPlaceBid(auction.id, ethers.parseEther(inputValue));
+                  await onClickPlaceBid(auction.tokenId, ethers.parseEther(inputValue));
                 }}
               >
                 Bid

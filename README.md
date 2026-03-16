@@ -1,7 +1,7 @@
 ## License
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
-<img src="./frontend/src/assets/imgs/Logo.png" width="150" alt="DnA NFT Store Logo" />
+<img src="./frontend/src/assets/imgs/DnaA_logo.svg" width="150" alt="DnA NFT Store Logo" />
 
 # DnA NFT Store
 
@@ -105,11 +105,13 @@ Contracts are deployed and verified on **Sepolia**, an Ethereum test network.
 ## Backend
 - **Solidity** — [Docs](https://docs.soliditylang.org/en/v0.8.30/)
 - **Hardhat 3** — [Docs](https://hardhat.org/docs/getting-started)
-- **Node.js** — [Docs](https://nodejs.org/docs/latest/api/)
+- **Chainlink Automation** — [Docs](https://docs.chain.link/chainlink-automation)
+
 
 ## Frontend
 - **React** with **Vite** — [Docs](https://vite.dev/guide/)
 - **Tailwind CSS** — [Docs](https://tailwindcss.com/docs/installation/using-vite)
+- **Node.js** — [Docs](https://nodejs.org/docs/latest/api/)
 - **ThirdWeb SDK** — [Docs](https://portal.thirdweb.com/typescript/v5)
 
 ---

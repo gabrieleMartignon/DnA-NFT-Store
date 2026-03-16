@@ -25,3 +25,4 @@ const auctionContract = getContract({
 });
 
 export { config, provider, nftContractRead, auctionContractRead, auctionContract };
+

@@ -51,7 +51,7 @@ export default function DirectPurchaseBox({ auction, account, auctionRarity, dat
           chain: sepolia,
           transactionHash: result.transactionHash,
         });
-        showAlert("Purchase completed", "Your NFT is availble on your wallet");
+        showAlert("Purchase completed", "Your NFT is available on your wallet");
 
         await new Promise((resolve) => setTimeout(resolve, 4000));
         onPurchaseComplete();
