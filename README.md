@@ -1,7 +1,7 @@
 ## License
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
-<img src="./frontend/src/assets/imgs/DnaA_logo.svg" width="150" alt="DnA NFT Store Logo" />
+<img src="./frontend/src/assets/imgs/DnA_logo.svg" width="150" alt="DnA NFT Store Logo" />
 
 # DnA NFT Store
 
